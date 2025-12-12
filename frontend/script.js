@@ -78,7 +78,7 @@ async function calculateWeight() {
                         <div class="result-card">
                             <span class="result-card-icon">⚖️</span>
                             <div class="result-card-label">Your Weight</div>
-                            <div class="result-card-value">${data.weight.toFixed(2)} kg</div>
+                            <div class="result-card-value">${data.weight.toFixed(2)} N</div>
                         </div>
                     </div>`;
     } catch (error) {
@@ -195,7 +195,7 @@ async function generateCustomPlanet() {
                 <div class="result-card">
                     <span class="result-card-icon">⚖️</span>
                     <div class="result-card-label">Your Weight</div>
-                    <div class="result-card-value">${data.weight.toFixed(2)} kg</div>
+                    <div class="result-card-value">${data.weight.toFixed(2)} N</div>
                 </div>
                 <div class="result-card">
                     <span class="result-card-icon">🦘</span>
