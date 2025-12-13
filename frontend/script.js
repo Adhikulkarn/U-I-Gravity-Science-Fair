@@ -1,33 +1,11 @@
 const API = "http://127.0.0.1:8000";
 
-// Create twinkling stars
-function createStars() {
-    const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.width = Math.random() * 3 + 'px';
-        star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 3 + 's';
-        starsContainer.appendChild(star);
-    }
+// Update slider label
+function updateSlider(id, value, unit) {
+    document.getElementById(id).textContent = value + unit;
 }
 
-createStars();
-
-// Update slider display value
-function updateSlider(elementId, value, unit) {
-    const element = document.getElementById(elementId);
-    if (value >= 1e24) {
-        element.textContent = parseFloat(value).toExponential(2) + unit;
-    } else {
-        element.textContent = parseFloat(value).toLocaleString() + unit;
-    }
-}
-
-// Load planets on page load
+// Load planets
 async function loadPlanets() {
     try {
         const res = await fetch(`${API}/planets`);
@@ -37,184 +15,109 @@ async function loadPlanets() {
         select.innerHTML = "";
 
         data.planets.forEach(p => {
-            const option = document.createElement("option");
-            option.value = p;
-            option.textContent = p;
-            select.appendChild(option);
+            const opt = document.createElement("option");
+            opt.value = p;
+            opt.textContent = p;
+            select.appendChild(opt);
         });
-    } catch (error) {
-        console.error("Error loading planets:", error);
+    } catch (e) {
         document.getElementById("planetResults").innerHTML =
-            "⚠️ Unable to connect to the API. Make sure the server is running!";
+            "Error loading planets.";
     }
 }
-
 window.onload = loadPlanets;
 
-async function loadPlanetData() {
-    const planet = document.getElementById("planetSelect").value;
-    document.getElementById("planetResults").innerHTML =
-        `<div class="single-result">
-                    <span class="single-result-icon">✨</span>
-                    Selected planet: <b>${planet}</b>
-                </div>`;
+// Show selected planet
+function loadPlanetData() {
+    const p = document.getElementById("planetSelect").value;
+    document.getElementById("planetResults").textContent =
+        "Selected Planet: " + p;
 }
 
+// Weight
 async function calculateWeight() {
-    const w = document.getElementById("earthWeight").value;
+    const mass = document.getElementById("earthWeight").value;
     const planet = document.getElementById("planetSelect").value;
 
     try {
-        const res = await fetch(`${API}/weight?earth_weight=${w}&planet=${planet}`);
+        const res = await fetch(`${API}/weight?earth_weight=${mass}&planet=${planet}`);
         const data = await res.json();
 
-        document.getElementById("weightResult").innerHTML =
-            `<div class="result-cards">
-                        <div class="result-card">
-                            <span class="result-card-icon">🌍</span>
-                            <div class="result-card-label">Planet</div>
-                            <div class="result-card-value">${planet}</div>
-                        </div>
-                        <div class="result-card">
-                            <span class="result-card-icon">⚖️</span>
-                            <div class="result-card-label">Your Weight</div>
-                            <div class="result-card-value">${data.weight.toFixed(2)} N</div>
-                        </div>
-                    </div>`;
-    } catch (error) {
-        document.getElementById("weightResult").innerHTML =
-            `<div class="single-result">⚠️ Error calculating weight</div>`;
+        document.getElementById("weightResult").textContent =
+            `Weight on ${planet}: ${data.weight.toFixed(2)} N`;
+    } catch {
+        document.getElementById("weightResult").textContent = "Error.";
     }
 }
 
+// Jump
 async function calculateJump() {
     const j = document.getElementById("earthJump").value;
-    const planet = document.getElementById("planetSelect").value;
+    const p = document.getElementById("planetSelect").value;
 
     try {
-        const res = await fetch(`${API}/jump_height?earth_jump=${j}&planet=${planet}`);
+        const res = await fetch(`${API}/jump_height?earth_jump=${j}&planet=${p}`);
         const data = await res.json();
 
-        document.getElementById("jumpResult").innerHTML =
-            `<div class="result-cards">
-                        <div class="result-card">
-                            <span class="result-card-icon">🌍</span>
-                            <div class="result-card-label">Planet</div>
-                            <div class="result-card-value">${planet}</div>
-                        </div>
-                        <div class="result-card">
-                            <span class="result-card-icon">🦘</span>
-                            <div class="result-card-label">Jump Height</div>
-                            <div class="result-card-value">${data.jump_height.toFixed(2)} m</div>
-                        </div>
-                    </div>`;
-    } catch (error) {
-        document.getElementById("jumpResult").innerHTML =
-            `<div class="single-result">⚠️ Error calculating jump height</div>`;
+        document.getElementById("jumpResult").textContent =
+            `Jump Height on ${p}: ${data.jump_height.toFixed(2)} m`;
+    } catch {
+        document.getElementById("jumpResult").textContent = "Error.";
     }
 }
 
+// Fall Time
 async function calculateFall() {
     const d = document.getElementById("fallDistance").value;
-    const planet = document.getElementById("planetSelect").value;
+    const p = document.getElementById("planetSelect").value;
 
     try {
-        const res = await fetch(`${API}/fall_time?distance=${d}&planet=${planet}`);
+        const res = await fetch(`${API}/fall_time?distance=${d}&planet=${p}`);
         const data = await res.json();
 
-        document.getElementById("fallResult").innerHTML =
-            `<div class="result-cards">
-                        <div class="result-card">
-                            <span class="result-card-icon">🌍</span>
-                            <div class="result-card-label">Planet</div>
-                            <div class="result-card-value">${planet}</div>
-                        </div>
-                        <div class="result-card">
-                            <span class="result-card-icon">⏱️</span>
-                            <div class="result-card-label">Fall Time</div>
-                            <div class="result-card-value">${data.fall_time.toFixed(2)} s</div>
-                        </div>
-                    </div>`;
-    } catch (error) {
-        document.getElementById("fallResult").innerHTML =
-            `<div class="single-result">⚠️ Error calculating fall time</div>`;
+        document.getElementById("fallResult").textContent =
+            `Fall Time on ${p}: ${data.fall_time.toFixed(2)} s`;
+    } catch {
+        document.getElementById("fallResult").textContent = "Error.";
     }
 }
 
+// Escape Velocity
 async function calculateEscape() {
-    const planet = document.getElementById("planetSelect").value;
+    const p = document.getElementById("planetSelect").value;
 
     try {
-        const res = await fetch(`${API}/escape_velocity?planet=${planet}`);
+        const res = await fetch(`${API}/escape_velocity?planet=${p}`);
         const data = await res.json();
 
-        document.getElementById("escapeResult").innerHTML =
-            `<div class="result-cards">
-                        <div class="result-card">
-                            <span class="result-card-icon">🌍</span>
-                            <div class="result-card-label">Planet</div>
-                            <div class="result-card-value">${planet}</div>
-                        </div>
-                        <div class="result-card">
-                            <span class="result-card-icon">🚀</span>
-                            <div class="result-card-label">Escape Velocity</div>
-                            <div class="result-card-value">${(data.escape_velocity / 1000).toFixed(2)} km/s</div>
-                        </div>
-                    </div>`;
-    } catch (error) {
-        document.getElementById("escapeResult").innerHTML =
-            `<div class="single-result">⚠️ Error calculating escape velocity</div>`;
+        document.getElementById("escapeResult").textContent =
+            `Escape Velocity: ${(data.escape_velocity / 1000).toFixed(2)} km/s`;
+    } catch {
+        document.getElementById("escapeResult").textContent = "Error.";
     }
 }
 
+// Custom Planet
 async function generateCustomPlanet() {
-    const radius = document.getElementById("customRadius").value;
-
-    // FIX: Encode mass so "+" does NOT break the URL
-    const massRaw = document.getElementById("customMass").value;
-    const mass = encodeURIComponent(massRaw);
-
-    const ew = document.getElementById("customEarthWeight").value;
-    const ej = document.getElementById("customEarthJump").value;
+    const r = document.getElementById("customRadius").value;
+    const m = encodeURIComponent(document.getElementById("customMass").value);
+    const w = document.getElementById("customEarthWeight").value;
+    const j = document.getElementById("customEarthJump").value;
     const fd = document.getElementById("customFallDistance").value;
 
     try {
         const res = await fetch(
-            `${API}/custom_planet?radius=${radius}&mass=${mass}&earth_weight=${ew}&earth_jump=${ej}&fall_distance=${fd}`
+            `${API}/custom_planet?radius=${r}&mass=${m}&earth_weight=${w}&earth_jump=${j}&fall_distance=${fd}`
         );
-
         const data = await res.json();
 
         document.getElementById("customResult").innerHTML =
-            `<div class="result-cards">
-                <div class="result-card">
-                    <span class="result-card-icon">🌍</span>
-                    <div class="result-card-label">Gravity</div>
-                    <div class="result-card-value">${data.gravity.toFixed(2)} m/s²</div>
-                </div>
-                <div class="result-card">
-                    <span class="result-card-icon">⚖️</span>
-                    <div class="result-card-label">Your Weight</div>
-                    <div class="result-card-value">${data.weight.toFixed(2)} N</div>
-                </div>
-                <div class="result-card">
-                    <span class="result-card-icon">🦘</span>
-                    <div class="result-card-label">Jump Height</div>
-                    <div class="result-card-value">${data.jump_height.toFixed(2)} m</div>
-                </div>
-                <div class="result-card">
-                    <span class="result-card-icon">⏱️</span>
-                    <div class="result-card-label">Fall Time</div>
-                    <div class="result-card-value">${data.fall_time.toFixed(2)} s</div>
-                </div>
-                <div class="result-card">
-                    <span class="result-card-icon">🚀</span>
-                    <div class="result-card-label">Escape Velocity</div>
-                    <div class="result-card-value">${(data.escape_velocity / 1000).toFixed(2)} km/s</div>
-                </div>
-            </div>`;
-    } catch (error) {
-        document.getElementById("customResult").innerHTML =
-            `<div class="single-result">⚠️ Error simulating custom planet</div>`;
+            `Gravity: ${data.gravity.toFixed(2)} m/s²<br>
+             Weight: ${data.weight.toFixed(2)} N<br>
+             Jump Height: ${data.jump_height.toFixed(2)} m<br>
+             Fall Time: ${data.fall_time.toFixed(2)} s<br>
+             Escape Velocity: ${(data.escape_velocity/1000).toFixed(2)} km/s`;
+    } catch {
+        document.getElementById("customResult").textContent = "Error.";
     }
 }

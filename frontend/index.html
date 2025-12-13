@@ -1,142 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Gravity Playground Simulator</title>
+    <title>Gravity Simulator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <!-- Animated background elements -->
-    <div class="stars" id="stars"></div>
-    <div class="rocket">🚀</div>
-    <div class="floating-planet planet1"></div>
-    <div class="floating-planet planet2"></div>
-    <div class="astronaut">👨‍🚀</div>
 
-    <header>
-        <h1> 💫Gravity Playground Simulator💫 </h1>>
-        <h1>🟤 ⚪️ 🌍 🔴 🟠 🪐 🟢 🔵</h1>
-        <p>Explore how gravity changes your weight, jump height, and fall speed on different planets!</p>
-    </header>
+<header>
+    <h1>Gravity Simulator</h1>
+    <p>Calculate weight, jump height, fall time, and escape velocity on any planet.</p>
+</header>
 
-    <main>
-        <!-- Planet Selector -->
-        <section class="card">
-            <h2>🪐 Choose a Planet</h2>
-            <select id="planetSelect"></select>
-            <button onclick="loadPlanetData()">Load Planet Info</button>
-            <div id="planetResults" class="output"></div>
-        </section>
+<main>
 
-        <!-- Weight Calculator -->
-        <section class="card">
-            <h2>⚖️ Weight on Another Planet</h2>
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Your Mass on Earth:</span>
-                    <span class="slider-value" id="weightValue">50 kg</span>
-                </div>
-                <input type="range" id="earthWeight" min="10" max="200" value="50"
-                    oninput="updateSlider('weightValue', this.value, ' kg')">
+    <!-- Planet Selector -->
+    <section class="card">
+        <h2>Select a Planet</h2>
+        <select id="planetSelect"></select>
+        <button onclick="loadPlanetData()">Load Planet</button>
+        <div id="planetResults" class="output"></div>
+    </section>
+
+    <!-- Weight -->
+    <section class="card">
+        <h2>Weight on Another Planet</h2>
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Your Mass on Earth:</span>
+                <span id="weightValue">50 kg</span>
             </div>
-            <button onclick="calculateWeight()">Calculate Weight</button>
-            <div id="weightResult" class="output"></div>
-        </section>
+            <input type="range" id="earthWeight" min="10" max="200" value="50"
+                   oninput="updateSlider('weightValue', this.value, ' kg')">
+        </div>
+        <button onclick="calculateWeight()">Calculate Weight</button>
+        <div id="weightResult" class="output"></div>
+    </section>
 
-        <!-- Jump Height -->
-        <section class="card">
-            <h2>🦘 Jump Height Simulator</h2>
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Your Jump Height on Earth:</span>
-                    <span class="slider-value" id="jumpValue">0.5 m</span>
-                </div>
-                <input type="range" id="earthJump" min="0.1" max="3" step="0.1" value="0.5"
-                    oninput="updateSlider('jumpValue', this.value, ' m')">
+    <!-- Jump -->
+    <section class="card">
+        <h2>Jump Height</h2>
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Earth Jump Height:</span>
+                <span id="jumpValue">0.5 m</span>
             </div>
-            <button onclick="calculateJump()">Calculate Jump Height</button>
-            <div id="jumpResult" class="output"></div>
-        </section>
+            <input type="range" id="earthJump" min="0.1" max="3" step="0.1" value="0.5"
+                   oninput="updateSlider('jumpValue', this.value, ' m')">
+        </div>
+        <button onclick="calculateJump()">Calculate Jump Height</button>
+        <div id="jumpResult" class="output"></div>
+    </section>
 
-        <!-- Fall Time -->
-        <section class="card">
-            <h2>🪂 Fall Time</h2>
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Fall Distance:</span>
-                    <span class="slider-value" id="fallValue">10 m</span>
-                </div>
-                <input type="range" id="fallDistance" min="1" max="100" value="10"
-                    oninput="updateSlider('fallValue', this.value, ' m')">
+    <!-- Fall -->
+    <section class="card">
+        <h2>Fall Time</h2>
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Fall Distance:</span>
+                <span id="fallValue">10 m</span>
             </div>
-            <button onclick="calculateFall()">Calculate Fall Time</button>
-            <div id="fallResult" class="output"></div>
-        </section>
+            <input type="range" id="fallDistance" min="1" max="100" value="10"
+                   oninput="updateSlider('fallValue', this.value, ' m')">
+        </div>
+        <button onclick="calculateFall()">Calculate Fall Time</button>
+        <div id="fallResult" class="output"></div>
+    </section>
 
-        <!-- Escape Velocity -->
-        <section class="card">
-            <h2>🚀 Escape Velocity</h2>
-            <button onclick="calculateEscape()">Show Escape Velocity</button>
-            <div id="escapeResult" class="output"></div>
-        </section>
+    <!-- Escape Velocity -->
+    <section class="card">
+        <h2>Escape Velocity</h2>
+        <button onclick="calculateEscape()">Show Escape Velocity</button>
+        <div id="escapeResult" class="output"></div>
+    </section>
 
-        <!-- Custom Planet Builder -->
-        <section class="card">
-            <h2>🛠️ Build Your Own Planet</h2>
+    <!-- Custom Planet -->
+    <section class="card">
+        <h2>Custom Planet</h2>
 
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Planet Radius:</span>
-                    <span class="slider-value" id="radiusValue">6371000 m</span>
-                </div>
-                <input type="range" id="customRadius" min="1000000" max="100000000" step="100000" value="6371000"
-                    oninput="updateSlider('radiusValue', this.value, ' m')">
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Radius:</span>
+                <span id="radiusValue">6371000 m</span>
             </div>
+            <input type="range" id="customRadius" min="1000000" max="100000000" step="100000" value="6371000"
+                   oninput="updateSlider('radiusValue', this.value, ' m')">
+        </div>
 
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Planet Mass:</span>
-                    <span class="slider-value" id="massValue">5.97e24 kg</span>
-                </div>
-                <input type="range" id="customMass" min="1e23" max="1e26" step="1e23" value="5.97e24"
-                    oninput="updateSlider('massValue', this.value, ' kg')">
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Planet Mass:</span>
+                <span id="massValue">5.97e24 kg</span>
             </div>
+            <input type="range" id="customMass" min="1e23" max="1e26" step="1e23" value="5.97e24"
+                   oninput="updateSlider('massValue', this.value, ' kg')">
+        </div>
 
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Your Mass :</span>
-                    <span class="slider-value" id="customWeightValue">50 kg</span>
-                </div>
-                <input type="range" id="customEarthWeight" min="10" max="200" value="50"
-                    oninput="updateSlider('customWeightValue', this.value, ' kg')">
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Your Mass:</span>
+                <span id="customWeightValue">50 kg</span>
             </div>
+            <input type="range" id="customEarthWeight" min="10" max="200" value="50"
+                   oninput="updateSlider('customWeightValue', this.value, ' kg')">
+        </div>
 
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Your Earth Jump Height:</span>
-                    <span class="slider-value" id="customJumpValue">0.5 m</span>
-                </div>
-                <input type="range" id="customEarthJump" min="0.1" max="3" step="0.1" value="0.5"
-                    oninput="updateSlider('customJumpValue', this.value, ' m')">
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Jump Height Earth:</span>
+                <span id="customJumpValue">0.5 m</span>
             </div>
+            <input type="range" id="customEarthJump" min="0.1" max="3" step="0.1" value="0.5"
+                   oninput="updateSlider('customJumpValue', this.value, ' m')">
+        </div>
 
-            <div class="slider-container">
-                <div class="slider-label">
-                    <span>Fall Distance:</span>
-                    <span class="slider-value" id="customFallValue">10 m</span>
-                </div>
-                <input type="range" id="customFallDistance" min="1" max="100" value="10"
-                    oninput="updateSlider('customFallValue', this.value, ' m')">
+        <div class="slider-container">
+            <div class="slider-label">
+                <span>Fall Distance:</span>
+                <span id="customFallValue">10 m</span>
             </div>
+            <input type="range" id="customFallDistance" min="1" max="100" value="10"
+                   oninput="updateSlider('customFallValue', this.value, ' m')">
+        </div>
 
-            <button onclick="generateCustomPlanet()">Simulate Custom Planet</button>
-            <div id="customResult" class="output"></div>
-        </section>
-    </main>
+        <button onclick="generateCustomPlanet()">Simulate</button>
+        <div id="customResult" class="output"></div>
+    </section>
 
-    <script src="script.js"></script>
+</main>
+
+<script src="script.js"></script>
 </body>
-
 </html>
