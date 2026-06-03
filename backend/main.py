@@ -1,6 +1,31 @@
 """
 main.py
-This file creates the FastAPI backend for the Gravity Playground Simulator.
+FastAPI backend for the Gravity Playground Simulator.
+
+This server provides REST endpoints for physics calculations related to gravity,
+weight, jump height, fall time, and escape velocity on different planets.
+
+Architecture:
+- FastAPI application with CORS enabled for frontend communication
+- Input validation on all parameters with clear error messages
+- Consistent error handling with HTTP status codes (422 for validation errors)
+- Physics calculations delegated to physics.py module
+- All values use SI units throughout
+
+Endpoints:
+- GET /                  - Server status
+- GET /planets           - List available planets
+- GET /weight            - Calculate weight on a planet
+- GET /escape_velocity   - Calculate escape velocity
+- GET /jump_height       - Calculate jump height on a planet
+- GET /fall_time         - Calculate fall time for a distance
+- GET /custom_planet     - Calculate all values for a custom planet
+
+Running the server:
+    uvicorn main:app --reload
+
+The server will be available at http://127.0.0.1:8000
+Interactive API docs available at http://127.0.0.1:8000/docs
 """
 
 from fastapi import FastAPI, HTTPException

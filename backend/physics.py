@@ -2,6 +2,13 @@
 physics.py  
 This module contains all physics formulas used in the Gravity Playground Simulator.
 Everything is written clearly so students and beginners can understand the logic.
+
+Physics Reference:
+- All values use SI units (meters, kilograms, seconds)
+- Gravitational constant G = 6.67430e-11 m³/(kg·s²)
+- Surface gravity: g = (G × M) / R²
+- Weight: W = m × g
+- Escape velocity: v = √(2GM/R)
 """
 
 import math
