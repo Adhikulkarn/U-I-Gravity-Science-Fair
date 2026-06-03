@@ -8,6 +8,27 @@ http://127.0.0.1:8000
 ## Overview
 The Gravity Playground API provides physics calculations for simulating gravity on different planets and custom celestial bodies. All endpoints return JSON responses.
 
+---
+
+## ⚠️ Security Considerations
+
+### CORS Policy
+The API currently enables CORS with `allow_origins=["*"]` to allow the frontend to communicate with the backend locally. **In production**, this should be restricted to specific domains:
+
+```python
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://yourdomain.com"],  # Specify domain
+    allow_methods=["GET"],  # Restrict methods
+    allow_headers=["*"],
+)
+```
+
+### Rate Limiting
+For production use, consider implementing rate limiting to prevent abuse.
+
+---
+
 ## Error Handling
 
 All endpoints follow consistent error handling:
@@ -225,16 +246,29 @@ All endpoints validate input parameters:
 
 ### JavaScript/Fetch
 ```javascript
-// Get weight on Mars
-const response = await fetch('http://127.0.0.1:8000/weight?earth_weight=70&planet=Mars');
-const data = await response.json();
-console.log(`Weight on Mars: ${data.weight.toFixed(2)} N`);
+// Get weight on Mars with timeout
+const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-// Handle errors
-if (!response.ok) {
-  console.error(`Error: ${data.detail}`);
+try {
+  const response = await fetch('http://127.0.0.1:8000/weight?earth_weight=70&planet=Mars', {
+    signal: controller.signal
+  });
+  clearTimeout(timeoutId);
+  
+  const data = await response.json();
+  console.log(`Weight on Mars: ${data.weight.toFixed(2)} N`);
+
+  if (!response.ok) {
+    console.error(`Error: ${data.detail}`);
+  }
+} catch (error) {
+  if (error.name === 'AbortError') {
+    console.error('Request timeout');
+  } else {
+    console.error('Request failed:', error);
+  }
 }
-```
 
 ### Python/Requests
 ```python
