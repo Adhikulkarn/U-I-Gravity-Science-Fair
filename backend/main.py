@@ -32,6 +32,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
+from time import time
 from physics import (
     PLANETS,
     weight_on_planet,
@@ -56,6 +57,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Middleware to track request processing time
+@app.middleware("http")
+async def add_process_time_header(request, call_next):
+    """Add X-Process-Time header to responses for performance monitoring."""
+    start_time = time()
+    response = await call_next(request)
+    process_time = time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
 
 @app.exception_handler(ValueError)
 async def value_error_handler(request, exc):
