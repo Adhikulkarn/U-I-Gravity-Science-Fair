@@ -38,8 +38,9 @@
                     <span>Your Mass on Earth:</span>
                     <span class="slider-value" id="weightValue">50 kg</span>
                 </div>
-                <input type="range" id="earthWeight" min="10" max="200" value="50"
-                    oninput="updateSlider('weightValue', this.value, ' kg')">
+                <input type="range" id="earthWeight" min="0.1" max="500" step="0.1" value="50"
+                    oninput="updateSlider('weightValue', this.value, ' kg'); validateInput(this)">
+                <small class="input-hint">Valid range: 0.1 - 500 kg</small>
             </div>
             <button onclick="calculateWeight()">Calculate Weight</button>
             <div id="weightResult" class="output"></div>
@@ -53,8 +54,9 @@
                     <span>Your Jump Height on Earth:</span>
                     <span class="slider-value" id="jumpValue">0.5 m</span>
                 </div>
-                <input type="range" id="earthJump" min="0.1" max="3" step="0.1" value="0.5"
-                    oninput="updateSlider('jumpValue', this.value, ' m')">
+                <input type="range" id="earthJump" min="0.01" max="10" step="0.01" value="0.5"
+                    oninput="updateSlider('jumpValue', this.value, ' m'); validateInput(this)">
+                <small class="input-hint">Valid range: 0.01 - 10 m</small>
             </div>
             <button onclick="calculateJump()">Calculate Jump Height</button>
             <div id="jumpResult" class="output"></div>
@@ -68,8 +70,9 @@
                     <span>Fall Distance:</span>
                     <span class="slider-value" id="fallValue">10 m</span>
                 </div>
-                <input type="range" id="fallDistance" min="1" max="100" value="10"
-                    oninput="updateSlider('fallValue', this.value, ' m')">
+                <input type="range" id="fallDistance" min="0.1" max="1000" step="0.1" value="10"
+                    oninput="updateSlider('fallValue', this.value, ' m'); validateInput(this)">
+                <small class="input-hint">Valid range: 0.1 - 1000 m</small>
             </div>
             <button onclick="calculateFall()">Calculate Fall Time</button>
             <div id="fallResult" class="output"></div>
@@ -91,8 +94,9 @@
                     <span>Planet Radius:</span>
                     <span class="slider-value" id="radiusValue">6371000 m</span>
                 </div>
-                <input type="range" id="customRadius" min="1000000" max="100000000" step="100000" value="6371000"
-                    oninput="updateSlider('radiusValue', this.value, ' m')">
+                <input type="range" id="customRadius" min="100000" max="1000000000" step="100000" value="6371000"
+                    oninput="updateSlider('radiusValue', this.value, ' m'); validateInput(this)">
+                <small class="input-hint">Valid range: 100,000 - 1,000,000,000 m</small>
             </div>
 
             <div class="slider-container">
@@ -100,8 +104,9 @@
                     <span>Planet Mass:</span>
                     <span class="slider-value" id="massValue">5.97e24 kg</span>
                 </div>
-                <input type="range" id="customMass" min="1e23" max="1e26" step="1e23" value="5.97e24"
-                    oninput="updateSlider('massValue', this.value, ' kg')">
+                <input type="range" id="customMass" min="1e20" max="2e27" step="1e23" value="5.97e24"
+                    oninput="updateSlider('massValue', this.value, ' kg'); validateInput(this)">
+                <small class="input-hint">Valid range: 1e20 - 2e27 kg</small>
             </div>
 
             <div class="slider-container">
@@ -109,8 +114,9 @@
                     <span>Your Mass :</span>
                     <span class="slider-value" id="customWeightValue">50 kg</span>
                 </div>
-                <input type="range" id="customEarthWeight" min="10" max="200" value="50"
-                    oninput="updateSlider('customWeightValue', this.value, ' kg')">
+                <input type="range" id="customEarthWeight" min="0.1" max="500" step="0.1" value="50"
+                    oninput="updateSlider('customWeightValue', this.value, ' kg'); validateInput(this)">
+                <small class="input-hint">Valid range: 0.1 - 500 kg</small>
             </div>
 
             <div class="slider-container">
@@ -118,8 +124,9 @@
                     <span>Your Earth Jump Height:</span>
                     <span class="slider-value" id="customJumpValue">0.5 m</span>
                 </div>
-                <input type="range" id="customEarthJump" min="0.1" max="3" step="0.1" value="0.5"
-                    oninput="updateSlider('customJumpValue', this.value, ' m')">
+                <input type="range" id="customEarthJump" min="0.01" max="10" step="0.01" value="0.5"
+                    oninput="updateSlider('customJumpValue', this.value, ' m'); validateInput(this)">
+                <small class="input-hint">Valid range: 0.01 - 10 m</small>
             </div>
 
             <div class="slider-container">
@@ -127,8 +134,9 @@
                     <span>Fall Distance:</span>
                     <span class="slider-value" id="customFallValue">10 m</span>
                 </div>
-                <input type="range" id="customFallDistance" min="1" max="100" value="10"
-                    oninput="updateSlider('customFallValue', this.value, ' m')">
+                <input type="range" id="customFallDistance" min="0.1" max="1000" step="0.1" value="10"
+                    oninput="updateSlider('customFallValue', this.value, ' m'); validateInput(this)">
+                <small class="input-hint">Valid range: 0.1 - 1000 m</small>
             </div>
 
             <button onclick="generateCustomPlanet()">Simulate Custom Planet</button>

@@ -486,3 +486,23 @@ button:active {
     animation: float 4s infinite ease-in-out;
     z-index: 5;
 }
+
+/* Input validation hint text */
+.input-hint {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Error state styling */
+.error-message {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-weight: bold;
+    animation: slideIn 0.3s ease-out;
+}
