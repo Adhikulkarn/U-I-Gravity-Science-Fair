@@ -1,12 +1,15 @@
 const API = "http://127.0.0.1:8000";
 
-// Input validation ranges matching backend
+/**
+ * Input validation ranges matching backend constraints.
+ * All ranges are defined to prevent invalid calculations.
+ */
 const VALID_RANGES = {
-    weight: [0.1, 500],
-    jump: [0.01, 10],
-    distance: [0.1, 1000],
-    radius: [100000, 1e9],
-    mass: [1e20, 2e27]
+    weight: [0.1, 500],      // kg (human mass range)
+    jump: [0.01, 10],        // m (physically possible jump range)
+    distance: [0.1, 1000],   // m (fall distance range)
+    radius: [100000, 1e9],   // m (planet radius range)
+    mass: [1e20, 2e27]       // kg (planet mass range)
 };
 
 // Create twinkling stars
@@ -26,7 +29,13 @@ function createStars() {
 
 createStars();
 
-// Validate input is within expected range
+/**
+ * Validates that an input value is within its accepted range.
+ * Provides visual feedback by adding a red border if out of range.
+ * 
+ * @param {HTMLElement} element - The input element to validate
+ * @returns {boolean} - True if valid, false if out of range
+ */
 function validateInput(element) {
     const value = parseFloat(element.value);
     const min = parseFloat(element.min);
@@ -41,7 +50,15 @@ function validateInput(element) {
     return true;
 }
 
-// Update slider display value
+/**
+ * Updates the display value of a slider with proper formatting.
+ * For large numbers (>1e24), uses exponential notation.
+ * For others, uses locale-specific number formatting.
+ * 
+ * @param {string} elementId - ID of the display element to update
+ * @param {number} value - The value to display
+ * @param {string} unit - The unit to append (e.g., ' kg', ' m')
+ */
 function updateSlider(elementId, value, unit) {
     const element = document.getElementById(elementId);
     if (value >= 1e24) {
@@ -75,6 +92,10 @@ async function loadPlanets() {
 
 window.onload = loadPlanets;
 
+/**
+ * Loads and displays information about the selected planet.
+ * This is a simple display function that confirms planet selection.
+ */
 async function loadPlanetData() {
     const planet = document.getElementById("planetSelect").value;
     document.getElementById("planetResults").innerHTML =
@@ -84,6 +105,11 @@ async function loadPlanetData() {
                 </div>`;
 }
 
+/**
+ * Calculates and displays the weight of an object on the selected planet.
+ * Validates that a planet is selected before making the API call.
+ * Displays API error messages to the user.
+ */
 async function calculateWeight() {
     const w = parseFloat(document.getElementById("earthWeight").value);
     const planet = document.getElementById("planetSelect").value;
@@ -121,6 +147,10 @@ async function calculateWeight() {
     }
 }
 
+/**
+ * Calculates and displays the jump height on the selected planet.
+ * Gravity on different planets affects how high you can jump.
+ */
 async function calculateJump() {
     const j = parseFloat(document.getElementById("earthJump").value);
     const planet = document.getElementById("planetSelect").value;
@@ -158,6 +188,10 @@ async function calculateJump() {
     }
 }
 
+/**
+ * Calculates and displays the fall time for a given distance on the selected planet.
+ * Uses the formula: t = sqrt(2 * d / g)
+ */
 async function calculateFall() {
     const d = parseFloat(document.getElementById("fallDistance").value);
     const planet = document.getElementById("planetSelect").value;
@@ -195,6 +229,10 @@ async function calculateFall() {
     }
 }
 
+/**
+ * Calculates and displays the escape velocity for the selected planet.
+ * This is the minimum speed needed to escape a planet's gravitational pull.
+ */
 async function calculateEscape() {
     const planet = document.getElementById("planetSelect").value;
 
@@ -231,6 +269,17 @@ async function calculateEscape() {
     }
 }
 
+/**
+ * Calculates and displays all physics values for a user-defined custom planet.
+ * URL-encodes the mass parameter to handle scientific notation properly.
+ * 
+ * This endpoint returns:
+ * - Surface gravity (m/s²)
+ * - Weight (Newtons)
+ * - Jump height (m)
+ * - Fall time (s)
+ * - Escape velocity (m/s, displayed as km/s)
+ */
 async function generateCustomPlanet() {
     const radius = parseFloat(document.getElementById("customRadius").value);
     const massRaw = document.getElementById("customMass").value;
