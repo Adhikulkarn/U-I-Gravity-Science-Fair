@@ -506,3 +506,28 @@ button:active {
     font-weight: bold;
     animation: slideIn 0.3s ease-out;
 }
+
+/* Form label styling */
+label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* Focus states for accessibility */
+button:focus,
+select:focus,
+input:focus {
+    outline: 3px solid #ffd700;
+    outline-offset: 2px;
+}
+
+/* Ensure all interactive elements have sufficient contrast */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
