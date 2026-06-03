@@ -1,5 +1,8 @@
 const API = "http://127.0.0.1:8000";
 
+// Cache loaded planets to avoid repeated API calls
+let planetsCached = false;
+
 /**
  * Input validation ranges matching backend constraints.
  * All ranges are defined to prevent invalid calculations.
@@ -70,8 +73,13 @@ function updateSlider(elementId, value, unit) {
 
 // Load planets on page load
 async function loadPlanets() {
+    // Skip if planets already cached
+    if (planetsCached) return;
+    
     try {
         const res = await fetch(`${API}/planets`);
+        if (!res.ok) throw new Error("Failed to fetch planets");
+        
         const data = await res.json();
 
         const select = document.getElementById("planetSelect");
@@ -83,6 +91,8 @@ async function loadPlanets() {
             option.textContent = p;
             select.appendChild(option);
         });
+        
+        planetsCached = true;
     } catch (error) {
         console.error("Error loading planets:", error);
         document.getElementById("planetResults").innerHTML =
