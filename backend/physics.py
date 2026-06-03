@@ -59,8 +59,12 @@ def validate_value(value: float, min_val: float, max_val: float, name: str) -> N
         name: Name of the parameter (for error messages)
     
     Raises:
-        ValueError: If value is outside the valid range
+        ValueError: If value is outside the valid range or is NaN/Inf
     """
+    # Check for NaN or Inf
+    if not math.isfinite(value):
+        raise ValueError(f"{name} must be a finite number, got {value}")
+    
     if value < min_val or value > max_val:
         raise ValueError(
             f"{name} must be between {min_val} and {max_val}, got {value}"

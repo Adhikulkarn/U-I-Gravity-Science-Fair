@@ -57,7 +57,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Error handler for validation errors
 @app.exception_handler(ValueError)
 async def value_error_handler(request, exc):
     """Handle validation errors with proper HTTP response."""
@@ -66,10 +65,12 @@ async def value_error_handler(request, exc):
         content={"detail": str(exc)}
     )
 
-# Error handler for all other errors
 @app.exception_handler(Exception)
 async def general_error_handler(request, exc):
     """Handle unexpected errors."""
+    # Log the error in production
+    import sys
+    print(f"Unexpected error: {exc}", file=sys.stderr)
     return JSONResponse(
         status_code=500,
         content={"detail": "An unexpected error occurred"}
